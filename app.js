@@ -4,6 +4,8 @@ window.addEventListener("load",()=>{
     let temperatureDescription = document.querySelector(".temperature-description");
     let temperatureDegree = document.querySelector(".temperature-degree");
     let locationTimezone = document.querySelector(".location-timezone");
+    let locationCity = document.querySelector(".location-city");
+    let locationIcon = document.querySelector(".location-Icon");
 
     if (navigator.geolocation){
         navigator.geolocation.getCurrentPosition(position =>{
@@ -18,12 +20,18 @@ window.addEventListener("load",()=>{
                 })
                 .then(data => {
                     console.log(data);
-                    const {temp,timezone} = data.data[0];
-                    const { description } = data.data[0].weather;
+                    const {temp,timezone, city_name} = data.data[0];
+                    const description = data.data[0].weather.description;
+                    const icon_name = data.data[0].weather.icon;
+                    console.log(icon_name);
                     //Set DOM elements from API
                     temperatureDegree.textContent = temp;
                     temperatureDescription.textContent = description;
                     locationTimezone.textContent = timezone;
+                    locationCity.textContent = city_name;
+                    // Set icon
+                    // locationIcon.textContent = icon;
+                    setIcons(icon_name);
                     
                 })
         });
@@ -34,8 +42,9 @@ window.addEventListener("load",()=>{
         h1.textContent ="Accept location finder"
     }
 
-    function setIcons(icon, iconID){
-        const skycons= new skycons({color: "white"});
-        // const currentIcon = 
+    function setIcons(icon_name){
+        var myImage = new Image(128,128);
+        myImage.src = 'https://www.weatherbit.io/static/img/icons/'+icon_name+'.png'
+        locationIcon.appendChild(myImage);
     };
 });
